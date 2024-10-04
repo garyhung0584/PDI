@@ -32,7 +32,7 @@ def is_straight(cards):
     num = [x[0] for x in cards]
     num.sort()
     if num[0] == 1 and num[4] == 13:
-        num[0] = 14
+        num = [x - 13 if x > 9 else x for x in num]
         num.sort()
     for i in range(1, 5):
         if num[i] - num[i - 1] != 1:
