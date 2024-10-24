@@ -42,10 +42,12 @@ def is_straight(cards):
 
 def is_three_of_a_kind(cards):
     num = [x[0] for x in cards]
+    threeOfaKind = 0
     for i in num:
         if num.count(i) == 3:
-            return True
-    return False
+            threeOfaKind += 1
+
+    return True if threeOfaKind else False
 
 
 def is_two_pairs(cards):
@@ -54,66 +56,72 @@ def is_two_pairs(cards):
     for i in num:
         if num.count(i) == 2:
             pairs += 1
-    return pairs == 2
+    if pairs == 4:
+        return True
+    else:
+        return False
 
 
 def is_one_pair(cards):
     num = [x[0] for x in cards]
+    pairs = 0
     for i in num:
         if num.count(i) == 2:
-            return True
-    return False
+            pairs += 1
+    if pairs:
+        return True
+    else:
+        return False
 
 
 def getCards():
     try:
         xCards = input().replace("10", "T").split()
-        yCards = input().replace("10", "T").split()
 
         xCards = [
             (PATTERN.index(x[0]) + 1, SUIT.index(x[1])) if len(x) == 2 else 0
             for x in xCards
         ]
-        yCards = [
-            (PATTERN.index(x[0]) + 1, SUIT.index(x[1])) if len(x) == 2 else 0
-            for x in yCards
-        ]
-        if 0 in xCards or 0 in yCards:
+
+        if 0 in xCards:
             raise Exception
     except:
         print("Error input")
         exit()
 
-    return xCards, yCards
+    return xCards
 
 
-def processResult(xCards, yCards):
+def processResult(xCards):
 
-    if is_straight_flush(xCards) or is_straight_flush(yCards):
+    if is_straight_flush(xCards):
         print("9")
-    elif is_four_of_a_kind(xCards) or is_four_of_a_kind(yCards):
+    elif is_four_of_a_kind(xCards):
         print("8")
-    elif is_full_house(xCards) or is_full_house(yCards):
+    elif is_full_house(xCards):
         print("7")
-    elif is_flush(xCards) or is_flush(yCards):
+    elif is_flush(xCards):
         print("6")
-    elif is_straight(xCards) or is_straight(yCards):  # need fix
+    elif is_straight(xCards):
         print("5")
-    elif is_three_of_a_kind(xCards) or is_three_of_a_kind(yCards):
+    elif is_three_of_a_kind(xCards):
         print("4")
-    elif is_two_pairs(xCards) or is_two_pairs(yCards):
+    elif is_two_pairs(xCards):
         print("3")
-    elif is_one_pair(xCards) or is_one_pair(yCards):
+    elif is_one_pair(xCards):
         print("2")
     else:
         print("1")
 
 
 if __name__ == "__main__":
-    xCards, yCards = getCards()
-    for x in xCards:
-        if x in yCards:
+    xCards = getCards()
+    
+    new = xCards.copy()
+    for _ in xCards:
+        x = new.pop()
+        if x in new:
             print("Duplicate deal")
             exit()
 
-    processResult(xCards, yCards)
+processResult(xCards)

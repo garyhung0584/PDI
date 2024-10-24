@@ -7,14 +7,12 @@ def parse(n):
 output = [parse(i) for i in n if parse(i)]
 
 if output == output[::-1]:
-    output = [i for i in set(output)]
-    output.sort()
+    output = sorted([i for i in set(output)])
 else:
     temp = []
     for _ in range(len(output)):
         n = output.pop()
         if n in output:
             temp.append(n)
-    output = [i for i in set(temp)]
-    output.sort(reverse=True)
+    output = sorted([i for i in set(temp)], reverse=True)
 print(output)
