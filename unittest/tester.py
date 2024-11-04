@@ -1,9 +1,9 @@
 import coverage
 import unittest
 
-cov = coverage.coverage(branch=True,source=['myBMI'])
+cov = coverage.Coverage(branch=True, source=['poker'])
 cov.start()
-suite = unittest.defaultTestLoader.discover(".","myBMItest.py")
+suite = unittest.defaultTestLoader.discover("./test","pokertest.py")
 unittest.TextTestRunner().run(suite)
 cov.stop()
 cov.save()

@@ -4,3 +4,4 @@ def BMICalculation(weight,height):
     if height < 0.5 or height > 2.5:
         return 'ERROR INPUT'
     BMI = weight / (height ** 2)
+    return BMI
