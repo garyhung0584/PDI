@@ -116,7 +116,7 @@ def processResult(xCards):
 
 if __name__ == "__main__":
     xCards = getCards()
-    
+
     new = xCards.copy()
     for _ in xCards:
         x = new.pop()

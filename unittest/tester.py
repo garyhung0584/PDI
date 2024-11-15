@@ -3,7 +3,7 @@ import unittest
 
 cov = coverage.Coverage(branch=True, source=['poker'])
 cov.start()
-suite = unittest.defaultTestLoader.discover("./test","pokertest.py")
+suite = unittest.defaultTestLoader.discover("./unittest","pokertest.py")
 unittest.TextTestRunner().run(suite)
 cov.stop()
 cov.save()
