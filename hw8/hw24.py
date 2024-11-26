@@ -4,38 +4,34 @@ def main():
         row = input().split()
         field.append(row)
 
-    res = field
     ANS = ["1", "2", "3", "4"]
+    res = [[j if j != "0" else ANS for j in i] for i in field]
     game = True
     while game:
         for i in range(4):
             for j in range(4):
-                if field[i][j] == "0":
-                    res[i][j] = ANS
-                    for k in range(4):
-                        if field[i][k] in res[i][j]:
-                            res[i][j].remove(field[i][k])
-                    for k in range(4):
-                        if field[k][j] in res[i][j]:
-                            res[i][j].remove(field[k][j])
-                    for k in range(4):
-                        if field[i // 2 * 2 + k // 2][j // 2 * 2 + k % 2] in res[i][j]:
-                            res[i][j].remove(
-                                field[i // 2 * 2 + k // 2][j // 2 * 2 + k % 2]
-                            )
-
+                if isinstance(res[i][j], list):
+                    for k in res[i][j]:
+                        if k in res[i]:
+                            res[i][j].remove(k)
+                            continue
+                        if k in [res[m][j] for m in range(4)]:
+                            res[i][j].remove(k)
                     if len(res[i][j]) == 1:
                         field[i][j] = res[i][j][0]
+                        res[i][j] = res[i][j][0]
 
         game = False
         for i in range(4):
             for j in range(4):
-                if "0" in res[i][j]:
+                if "0" in field[i][j]:
+                    print(field[i][j], i, j)
                     game = True
+                    break
 
-    for i in res:
-        for j in i:
-            print(j, end=" ")
+    # for i in field:
+    #     for j in i:
+    #         print(j, end=" ")
 
 
 if __name__ == "__main__":

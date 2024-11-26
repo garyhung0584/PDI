@@ -1,7 +1,3 @@
-PATTERN = ("A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K")
-SUIT = ("C", "D", "H", "S")
-
-
 def is_straight_flush(cards):
     return is_flush(cards) and is_straight(cards)
 
@@ -66,16 +62,19 @@ def is_one_pair(cards):
 
 
 def getCards():
+    NUMBERS = ("A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K")
+    SUIT = ("C", "D", "H", "S")
+
     try:
         xCards = input().replace("10", "T").split()
         yCards = input().replace("10", "T").split()
 
         xCards = [
-            (PATTERN.index(x[0]) + 1, SUIT.index(x[1])) if len(x) == 2 else 0
+            (NUMBERS.index(x[0]) + 1, SUIT.index(x[1])) if len(x) == 2 else 0
             for x in xCards
         ]
         yCards = [
-            (PATTERN.index(x[0]) + 1, SUIT.index(x[1])) if len(x) == 2 else 0
+            (NUMBERS.index(x[0]) + 1, SUIT.index(x[1])) if len(x) == 2 else 0
             for x in yCards
         ]
         if 0 in xCards or 0 in yCards:
@@ -90,23 +89,23 @@ def getCards():
 def processResult(xCards, yCards):
 
     if is_straight_flush(xCards) or is_straight_flush(yCards):
-        print("9")
+        return 9
     elif is_four_of_a_kind(xCards) or is_four_of_a_kind(yCards):
-        print("8")
+        return 8
     elif is_full_house(xCards) or is_full_house(yCards):
-        print("7")
+        return 7
     elif is_flush(xCards) or is_flush(yCards):
-        print("6")
-    elif is_straight(xCards) or is_straight(yCards):  # need fix
-        print("5")
+        return 6
+    elif is_straight(xCards) or is_straight(yCards):
+        return 5
     elif is_three_of_a_kind(xCards) or is_three_of_a_kind(yCards):
-        print("4")
+        return 4
     elif is_two_pairs(xCards) or is_two_pairs(yCards):
-        print("3")
+        return 3
     elif is_one_pair(xCards) or is_one_pair(yCards):
-        print("2")
+        return 2
     else:
-        print("1")
+        return 1
 
 
 if __name__ == "__main__":
@@ -116,4 +115,4 @@ if __name__ == "__main__":
             print("Duplicate deal")
             exit()
 
-    processResult(xCards, yCards)
+    print(processResult(xCards, yCards))
