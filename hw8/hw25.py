@@ -1,48 +1,45 @@
+def getRes(st, d):
+    n = len(st)
+    layer = []
+    ans = ""
+    for i in range(n):
+        if st[i] == "[" or st[i] == "{" or st[i] == "(":
+            layer.append(st[i])
+        elif st[i] == "]" or st[i] == "}" or st[i] == ")":
+            if not layer:
+                return "fail"
+            if st[i] == "]" and layer[-1] == "[":
+                layer.pop()
+            elif st[i] == "}" and layer[-1] == "{":
+                layer.pop()
+            elif st[i] == ")" and layer[-1] == "(":
+                layer.pop()
+            else:
+                return "fail"
+        elif len(layer) == d:
+            ans += st[i]
+
+    if layer:
+        return "fail"
+    else:
+        ans = ans if ans else "EMPTY"
+        return "pass," + ans
+
+
 def main():
     temp = []
     n = int(input())
     d = int(input())
-    for i in range(n):
+    for _ in range(n):
         st = input()
         temp.append(st)
 
-    for i in range(n):
-        depth = [0] * 3
-        length = len(temp[i])
-        cur = temp[i]
-        record = ""
-        lock = 0
-        for j in range(length):
-            if cur[j] == "{":
-                depth[0] += 1
-                lock = 1
-            if cur[j] == "}":
-                if lock != 1:
-                    print("fail7")
-                    break
-                depth[0] -= 1
-            if cur[j] == "[":
-                depth[1] += 1
-                lock = 2
-            if cur[j] == "]":
-                if lock != 2:
-                    print("fail")
-                    break
-                depth[1] -= 1
-            if cur[j] == "(":
-                depth[2] += 1
-                lock = 3
-            if cur[j] == ")":
-                if lock != 3:
-                    print("fail")
-                    break
-                depth[2] -= 1
+    res = []
+    for i in temp:
+        res.append(getRes(i, d))
 
-            if sum(depth) == d:
-                record += cur[j]
-
-        if sum(depth) == 0:
-            print("PASS")
+    for i in res:
+        print(i)
 
 
 if __name__ == "__main__":

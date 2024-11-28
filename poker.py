@@ -87,7 +87,6 @@ def getCards():
 
 
 def processResult(xCards, yCards):
-
     if is_straight_flush(xCards) or is_straight_flush(yCards):
         return 9
     elif is_four_of_a_kind(xCards) or is_four_of_a_kind(yCards):
@@ -110,6 +109,7 @@ def processResult(xCards, yCards):
 
 if __name__ == "__main__":
     xCards, yCards = getCards()
+
     for x in xCards:
         if x in yCards:
             print("Duplicate deal")

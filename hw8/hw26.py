@@ -1,3 +1,25 @@
+def processDeliver(se, m):
+    """
+    處理貨物配送並輸出結果。
+    :param se: 貨物編號列表
+    :param m: 貨車載重限制
+    """
+    solution = []
+    current = []
+    while se:
+        current.append(se[0])
+        for i in se[1:]:
+            if int(i[0]) + sum([int(j[0]) for j in current]) <= m:
+                current.append(i)
+        if sum([int(j[0]) for j in current]) == m:
+            solution.append(current)
+            for j in current:
+                se.remove(j)
+            current = []
+
+    return [[j[1] for j in i] for i in sorted(solution)]
+
+
 def main():
     se = input().split(" ")
     m = int(input())
@@ -18,31 +40,11 @@ def main():
         print("Cannot be delivered")
         return
 
-    sol = []
-    cur = []
-    weight = 0
-    count = 0
-    while se:
-        i = se.pop(0)
-        cur.append(i)
-        weight += int(i[0])
-        for j in se:
-            if weight + int(j[0]) <= m:
-                weight += int(j[0])
-                cur.append(j)
-                se.remove(j)
-
-        if weight == m:
-            count += 1
-            sol.append(cur)
-            cur = []
-            weight = 0
-
-    print(count)
-    sol.sort(reverse=True)
-    sol = [[j[1] for j in i] for i in sol]
-    for i in sol:
-        i.sort()
+    solution = processDeliver(se, m)
+    solution = sorted([sorted(i) for i in solution])
+    print(len(solution))
+    solution.sort(key=lambda x: (len(x), x))
+    for i in solution:
         for j in i:
             print(j, end=" ")
         print()
