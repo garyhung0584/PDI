@@ -11,12 +11,8 @@ def is_four_of_a_kind(cards):
 
 
 def is_full_house(cards):
-    num = [x[0] for x in cards]
-    for i in num:
-        if num.count(i) == 3:
-            for j in num:
-                if num.count(j) == 2:
-                    return True
+    if is_three_of_a_kind(cards) and is_one_pair(cards):
+        return True
     return False
 
 

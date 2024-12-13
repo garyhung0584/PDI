@@ -1,5 +1,5 @@
 def tr(index):
-    table = {str(w): chr(w) for w in range(ord("A"), ord("Z") + 1)}
+    table = {str(w - ord("A") + 1): chr(w) for w in range(ord("A"), ord("Z") + 1)}
     if int(index) > 26:
         return "-1"
     return table[index]
