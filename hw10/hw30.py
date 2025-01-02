@@ -2,46 +2,62 @@ def main():
     schools = []
     queries = []
     conditions = []
-    results = []
+    sol = []
 
     n = int(input())
     for _ in range(n):
-        line = input().split()
-        schools.append((line[0], set(line[1:])))
+        sc = input().split()
+        schools.append(sc)
 
     m = int(input())
     for _ in range(m):
-        query = input().split(" + ")
-        conditions.append([set(q.split()) for q in query])
+        qu = input().split()
+        queries.append(qu)
 
     b = int(input())
 
+    datatable = {}
+    for i in schools:
+        datatable[i[0]] = set(i[1:])
+
+    for query in queries:
+        condition = [set()]
+        now = 0
+        for j in query:
+            if j != "+":
+                condition[now].add(j)
+            else:
+                now += 1
+                condition.append(set())
+        conditions.append(condition)
+
     for condition in conditions:
-        if b == 0:  # Output all schools that fully meet the conditions
-            valid_schools = []
-            for school_name, attributes in schools:
-                if any(
-                    all(req.issubset(attributes) for req in option)
-                    for option in condition
-                ):
-                    valid_schools.append(school_name)
-            results.append(valid_schools)
-        else:  # Output the school(s) that meet the most conditions
-            match_counts = {}
-            for school_name, attributes in schools:
-                match_count = 0
-                for option in condition:
-                    match_count += sum(1 for req in option if req & attributes)
-                match_counts[school_name] = match_count
+        if b == 0:
+            sol.append([])
+        else:
+            sol.append({sName: set() for sName in datatable})
 
-            max_match = max(match_counts.values(), default=0)
-            best_schools = [
-                school for school, count in match_counts.items() if count == max_match
-            ]
-            results.append(best_schools)
+        for i in condition:
+            for sName in datatable:
+                if b == 0:
+                    if i.issubset(datatable[sName]):
+                        if sName not in sol[-1]:
+                            sol[-1].append(sName)
+                else:
+                    sol[-1][sName] |= i & datatable[sName]
 
-    for result in results:
-        print(" ".join(result))
+        if b == 1:
+            max_matches = max((len(attrs) for attrs in sol[-1].values()), default=0)
+            sol[-1] = " ".join(
+                sName for sName, attrs in sol[-1].items() if len(attrs) == max_matches
+            )
+
+    for result in sol:
+        if b == 0:
+            result.sort(key=lambda x: [school[0] for school in schools].index(x))
+            print(" ".join(result))
+        else:
+            print(result)
 
 
 if __name__ == "__main__":
